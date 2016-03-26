@@ -1,0 +1,112 @@
+package com.can;
+
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.dbutil.CRUDOperation;
+/**
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class Post_text
+ */
+@WebServlet("/Post_text")
+public class Post_text extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	Connection con=null;
+	ResultSet rs,rs1=null;
+	PreparedStatement ps,ps1;
+	HttpSession hs=null;   
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Post_text() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		HttpSession hs=request.getSession(false);
+		String text=request.getParameter("post_text");
+		int l=text.length();
+		long id=(l*text.charAt((l/2)))*(int)(Math.random()*l);
+		String userid=(String)hs.getAttribute("loginid");
+		System.out.println("teacher's id is......="+userid);
+		String strsql="insert into a"+userid+" values(?,?,?,?,?)";
+		String strsql1="insert into security values(?,?)";
+		java.util.Date d=new java.util.Date();
+		java.sql.Date sd=new java.sql.Date(d.getTime());
+		con=CRUDOperation.createConection();
+		try
+		{
+			ps=con.prepareStatement(strsql);
+			ps.setLong(1, id);
+			ps.setString(2, userid);
+			ps.setString(3, text);
+			ps.setDate(4, sd);
+			ps.setString(5, "true");
+			ps.executeUpdate();
+			response.sendRedirect("/e-canvass/jsp/Teacher.jsp");
+		}
+		catch(SQLException sq)
+		{
+			System.out.println(sq);
+		}
+		
+		
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		HttpSession hs=request.getSession(false);
+		String text=request.getParameter("text");
+		String text1=(String)hs.getAttribute("cmntype");
+	    int s=Integer.parseInt(request.getQueryString());
+	    System.out.println("messageid="+s);
+		String userid=(String)hs.getAttribute("loginid");
+		String name=(String)hs.getAttribute("name");
+		String strsql="insert into comments values(?,?,?,?,?) ";
+		con=CRUDOperation.createConection();
+		try
+		{
+			ps=con.prepareStatement(strsql);
+			ps.setInt(1, s);
+			ps.setString(2, text);
+			ps.setString(3, userid);
+			ps.setString(4, name);
+			ps.setString(5, "true");
+			ps.executeUpdate();
+			System.out.println(text1+" navigate here");
+			response.sendRedirect("/e-canvass/jsp/"+text1+".jsp?"+hs.getAttribute("clickedid"));
+		}
+		catch(SQLException sq)
+		{
+			System.out.println(sq);
+		}
+
+	}	}
+
+

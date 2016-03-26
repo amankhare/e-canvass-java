@@ -1,0 +1,5 @@
+INDEX VERSION 1.122+D:\6th sem e-canvass\new e-canvass\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3457519361.index
+1308741993.index
+2710481555.index
+1077421045.index

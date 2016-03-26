@@ -1,0 +1,2 @@
+INDEX VERSION 1.126+D:\6th sem e-canvass\new e-canvass\.metadata\.plugins\org.eclipse.jdt.core
+2710481555.index
